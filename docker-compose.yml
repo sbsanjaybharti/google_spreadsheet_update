@@ -1,0 +1,25 @@
+version: '3.4'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: local.Dockerfile
+    volumes:
+      - .:/var/www/html
+      - cache:/var/www/html/app/var/cache
+      - log:/var/www/html/app/var/log
+      - vendor:/var/www/html/app/var/vendor
+
+  nginx:
+    build: nginx
+    ports:
+      - '8080:80'
+    links:
+      - app
+    volumes:
+      - ./logs/nginx/:/var/log/nginx:cached
+
+volumes:
+  cache:
+  log:
+  vendor:
